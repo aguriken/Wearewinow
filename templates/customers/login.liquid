@@ -1,28 +1,184 @@
-<!-- /templates/customers/login.liquid -->
+<div class="login">
+  <div class="login__area" id="login__area">
+    <h1 class="login__area__heading">{{'login' | upcase}}</h1>
+    {% form 'customer_login', novalidate: 'novalidate' %}
 
-<h2>Login</h2>
-{% form 'customer_login' %}
+    <input
+      type="email"
+      name=""
+      id=""
+      autocomplete=""
+      autocorrect="off"
+      autocapitalize="off"
+      placeholder="Email"
+      >
 
-{{ form.errors | default_errors }}
+    {% if form.password_needed %}
+      <input
+        type="password"
+        value=""
+        name=""
+        id=""
+        placeholder="Password"
+      >
+    {% endif %}
 
-<label for="customer_email">Email Address</label>
-<input type="email" name="customer[email]" />
+    {% if form.password_needed %}
+      <p class="login__area__reset-password-link"><a href="#" id="RecoverPassword">Forget Password?</a></p>
+    {% endif %}
 
-<label for="customer_password">Password</label>
-<input type="password" name="customer[password]" />
+    <input type="submit" class="btn" value="SIGN IN">
 
-<input type="submit" value="Sign In" />
+    <p class="login__area__new-customer-link">
+      {{ 'NEW CUSTOMER' | customer_register_link }}
+    </p>
 
-{% endform %}
+  {% endform %}
+  </div>
 
-<h2>Forgot Password</h2>
-{% form 'recover_customer_password' %}
+  <div class="reset-password__area hide" id="reset-password__area">
+    <h2 class="reset-password__area__heading">{{'reset your password' | upcase}}</h2>
+    <p class="reset-password__area__msg">We will send you an email to reset your password.</p>
+    <div class="form-vertical">
+      {% form 'recover_customer_password' %}
 
-{{ form.errors | default_errors }}
+        <input
+          type="email"
+          value=""
+          placeholder="Email"
+          name=""
+          id=""
+          autocorrect="off"
+          autocapitalize="off"
+          >
 
-<label for="customer_email">Email Address</label>
-<input type="email" name="email" />
+        <input type="submit" class="btn" value="SUBMIT">
 
-<input type="submit" value="Submit" />
+        <p class="reset-password__area__login-link"><a href="#" id="HideRecoverPasswordLink">Cancel</a></p>
+        
+      {% endform %}
+    </div>
+  </div>
+</div>
 
-{% endform %}
+<style>
+.login__area {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 470px;
+}
+
+.login__area__heading {
+  margin-bottom: 26px;
+  letter-spacing: 0.2em;
+  font-size: 24px;
+  text-align: center;
+}
+
+.login__area input {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  padding: 26px 18px;
+  margin-bottom: 20px;
+  border: 3px solid #c0c0c0;
+  font-size: 16px;
+}
+
+.login__area input[type="submit"] {
+  width: 80%;
+  margin: 0 auto 50px;
+  cursor: pointer;
+  letter-spacing: 0.3em;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: none;
+}
+
+@media screen and (max-width: 749px) {
+  .login__area input[type="submit"] {
+    width: 88%;
+  }
+}
+
+.login__area input[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+.login__area__reset-password-link {
+  text-align: center;
+}
+
+.login__area__reset-password-link a {
+  text-decoration: none;
+  color: black;
+}
+
+.login__area__new-customer-link {
+  text-align: center;
+}
+
+.login__area__new-customer-link a {
+  color: black;
+  font-size: 18px;
+  letter-spacing: 0.3em;
+}
+
+.reset-password__area {
+  padding: 0 20px;
+  margin: 0 auto;
+  max-width: 470px;
+}
+
+.reset-password__area__heading {
+  margin-bottom: 26px;
+  letter-spacing: 0.2em;
+  font-size: 20px;
+  text-align: center;
+}
+
+.reset-password__area input {
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+  padding: 26px 18px;
+  margin-bottom: 20px;
+  border: 3px solid #c0c0c0;
+  font-size: 16px;
+}
+
+.reset-password__area input[type="submit"] {
+  width: 80%;
+  margin: 0 auto;
+  cursor: pointer;
+  letter-spacing: 0.3em;
+  background: #3a3a3a;
+  color: #ffffff;
+  border: none;
+}
+
+@media screen and (max-width: 749px) {
+  .reset-password__area input[type="submit"] {
+    width: 88%;
+  }
+}
+
+.reset-password__area input[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+
+.reset-password__area__login-link {
+  text-align: center;
+}
+
+.reset-password__area__login-link a {
+  color: black;
+  font-size: 18px;
+  letter-spacing: 0.3em;
+}
+
+.hide {
+  display: none;
+}
+</style>
