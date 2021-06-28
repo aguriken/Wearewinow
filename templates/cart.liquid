@@ -1,46 +1,339 @@
 {% if cart.item_count > 0 %}
-  <h1>cart</h1>
-  <form action="/cart" method="post" novalidate>
+  <h1 class="cart__heading">{{'your cart' | upcase}}</h1>
+  <form class="cart__form" action="/cart" method="post" novalidate>
     <table>
       <thead>
-        <th colspan="2">Prod</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>total</th>
+        <th colspan="2">PRODUCT DETAILS</th>
+        <th>PRICE</th>
+        <th>QUALITY</th>
+        <th>TOTAL</th>
+        <th></th>
       </thead>
       <tbody>
         {% for item in cart.items %}
           <tr>
-            <td>
-              <a href="{{ item.url | within: collections.all }}">
-                <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
-              </a>
+            <td class="td-image">
+              <div class="cart__item__img">
+                <a href="{{ item.url | within: collections.all }}">
+                  <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
+                </a>
+              </div>
             </td>
-            <td>
-              <a href="{{ item.url }}">{{ item.product.title }}</a>
-              {{ item.variant.title }}
-              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">remove</a>
+            <td class="td-title">
+              <div class="cart__item__title">
+                <p class="cart__item__title--brand">Brand</p>
+                <a class="cart__item__title--link"href="{{ item.url }}">{{ item.product.title }}</a>
+                <p class="cart__item__title--sub">MATTE BLACK</p>
+              </div>
             </td>
-            <td>{{ item.price | money }}</td>
-            <td>
-              <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+            <td class="td-price">{{ item.price | money }}</td>
+            <td class="td-quality">
+              <div class="cart__item__quality">
+                <button>-</button>
+                <input disabled="disabled"  type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+                <button>+</button>
+              </div>
             </td>
-            <td>
+            <td class="td-sum">
               {% if item.original_line_price != item.line_price %}{{ item.original_line_price | money }}{% endif %}
               {{ item.line_price | money }}
               {% for discount in item.discounts %}{{ discount.title }}{% endfor %}
+            </td>
+            <td class="td-remove">
+              <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0"><span class="batsu">×</span></a>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-    <div>
-      <p>sub total : {{ cart.total_price | money }}</p>
-      <button type="submit" name="update">Update</button>
-      <button type="submit" name="checkout">Checkout</button>
+
+    <div class="cart__total">
+      <div class="cart__total__continue-shopping">
+        <a href="{{ routes.all_products_collection_url }}">
+          {{ 'continue shopping' | upcase }}
+        </a>
+      </div>
+      <div class="cart__total__calc">
+        <div class="cart__total__calc__shipping-fee">
+          <p>送料</p>
+          <p>¥1,000</p>
+        </div>
+        <div class="cart__total__calc__total-fee">
+          <p>合計</p>
+          <p>{{ cart.total_price | money }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="cart__checkout">
+      <button type="submit" name="checkout">{{'continue to checkout' | upcase}}</button>
     </div>
   </form>
 {% else %}
   <h2>cart</h2>
   Cart is empty
 {% endif %}
+
+<style>
+.cart__heading {
+  margin-bottom: 80px;
+  text-align: center;
+  letter-spacing: 0.2em;
+}
+
+.cart__form {
+  padding-left: 60px;
+  margin: 0 20px;
+}
+
+.cart__item__img {
+  width: 160px;
+}
+
+.cart__item__img a {
+  width: 100%;
+}
+
+.cart__item__img a img {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+thead {
+  border-bottom: 1px solid #000000;
+}
+
+tbody {
+  border-bottom: 1px solid #d3d3d3;
+}
+
+th {
+  padding-bottom: 5px;
+  text-align: left;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.cart__item__title--brand {
+  display: none;
+}
+
+.cart__item__title--link {
+  letter-spacing: 0.15em;
+  font-size: 14px;
+}
+
+.cart__item__title--sub {
+  margin: 10px 0 0;
+  font-style: italic;
+  color: #d3d3d3;
+  letter-spacing: 0.1em;
+  font-size: 12px;
+}
+
+.cart__item__quality {
+  display: inline-block;
+  min-width: 101px;
+  border: 1px solid #000000;
+}
+
+.cart__item__quality input {
+  width: 30px;
+  height: 22px;
+  text-align: right;
+  padding: 0 0 0 5px;
+  border: none;
+  background-color: transparent;
+}
+
+.cart__item__quality button {
+  cursor: pointer;
+  width: 27px;
+  height: 27px;
+  border: none;
+  background-color: transparent;
+}
+
+.td-price {
+  padding-right: 50px;
+}
+
+.td-remove {
+  padding-left: 30px;
+}
+
+.batsu {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 20px;
+}
+
+.cart__total {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart__total__continue-shopping {
+  padding-top: 1.5em;
+}
+
+.cart__total__continue-shopping a {
+  padding: 9px 30px;
+  border: 1px solid black;
+  font-size: 11px;
+}
+
+.cart__total__calc {
+  width: 230px;
+  padding-top: 1em;
+  margin-right: 30px;
+}
+
+.cart__total__calc__shipping-fee {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart__total__calc__shipping-fee p {
+  margin: 0.5em 0;
+}
+
+.cart__total__calc__shipping-fee p:last-child {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.cart__total__calc__total-fee {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart__total__calc__total-fee p {
+  margin: 0.5em 0;
+}
+
+.cart__total__calc__total-fee p:last-child {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.cart__checkout {
+  margin-top: 40px;
+}
+
+.cart__checkout button {
+  display: block;
+  color: #ffffff;
+  background: #3a3a3a;
+  font-style: italic;
+  margin: 0 30px 0 auto;
+  padding: 12px 50px;
+  border: none;
+}
+
+@media screen and (max-width: 749px) {
+  .cart__heading {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .cart__form {
+    margin: 0;
+    padding: 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    border-bottom: none;
+  }
+
+  .td-image {
+    max-width: 160px;
+    width: 33%;
+  }
+
+  .cart__item__img {
+    width: auto;
+  }
+
+  .cart__item__title--brand {
+    display: block;
+    margin: 0 0 5px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .cart__item__title--link {
+    font-size: 12px;
+  }
+
+  .cart__item__title--sub {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .td-price {
+    color: #a9a9a9;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .td-title,
+  .td-price,
+  .td-quality {
+    display: block;
+    margin-left: 10%;
+  }
+
+  .td-quality {
+    margin-bottom: 30px;
+  }
+
+  .td-sum {
+    display: none;
+  }
+
+  .cart__item__quality {
+    min-width: 100px;
+  }
+
+  .cart__item__quality input {
+    padding: 0;
+    text-align: center;
+  }
+
+  .cart__total {
+    display: block;
+  }
+
+  .cart__total__continue-shopping {
+    display: flex;
+    justify-content: center;
+  }
+
+  .cart__total__calc {
+    margin: 0 0 0 auto;
+  }
+
+  .cart__checkout button {
+    margin: 0 0 0 auto;
+  }
+}
+
+</style>

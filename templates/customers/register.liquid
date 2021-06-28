@@ -1,21 +1,99 @@
-<!-- /templates/customers/register.liquid -->
+<div class="register">
+  <div class="register__area" id="register__area">
+    <h1 class="register__area__heading">{{'create account' | upcase}}</h1>
+    {% form 'create_customer', novalidate: 'novalidate' %}
 
-{% form 'create_customer' %}
+    <input 
+      type="text" 
+      placeholder="First Name" 
+      name="" 
+      id=""
+      value=""
+      autocomplete="given-name"
+    >
 
-{{ form.errors | default_errors }}
+    <input 
+      type="text" 
+      placeholder="Last Name" 
+      name="" 
+      id=""
+      value=""
+      autocomplete="given-name"
+    >
 
-<label for="first_name">First Name</label>
-<input type="text" value="" name="customer[first_name]" size="30" />
+    <input
+      type="email"
+      name=""
+      id=""
+      autocomplete=""
+      autocorrect="off"
+      autocapitalize="off"
+      placeholder="Email"
+      >
 
-<label for="last_name">Last Name</label>
-<input type="text" value="" name="customer[last_name]" size="30" />
+    <input
+      type="password"
+      value=""
+      name=""
+      id=""
+      placeholder="Password"
+    >
 
-<label for="email">Email Address</label>
-<input type="email" value="" name="customer[email]" size="30" />
+    <input
+      type="password"
+      value=""
+      name=""
+      id=""
+      placeholder="Password Confirmation"
+    >
 
-<label for="password">Password</label>
-<input type="password" value="" name="customer[password]" size="30" />
+    <input type="submit" class="btn" value="create an account">
 
-<input type="submit" value="Create" />
+  {% endform %}
+  </div>
+</div>
 
-{% endform %}
+<style>
+  .register__area {
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 470px;
+  }
+  
+  .register__area__heading {
+    margin-bottom: 26px;
+    letter-spacing: 0.15em;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .register__area input {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 26px 18px;
+    margin-bottom: 20px;
+    border: 3px solid #c0c0c0;
+    font-size: 16px;
+  }
+  
+  .register__area input[type="submit"] {
+    width: 80%;
+    margin: 0 auto 50px;
+    cursor: pointer;
+    letter-spacing: 0.3em;
+    background: #3a3a3a;
+    color: #ffffff;
+    border: none;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .register__area input[type="submit"] {
+      width: 88%;
+    }
+  }
+  
+  .register__area input[type="submit"]:hover {
+    opacity: 0.8;
+  }
+  </style>
